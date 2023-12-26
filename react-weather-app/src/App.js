@@ -4,12 +4,16 @@ import './App.css';
 import City from "./City"
 
 function App() {
-  const key ="a4046b031f9a01ce40a0aa6440ccb1a5";
+  const key = "a4046b031f9a01ce40a0aa6440ccb1a5";
   const [search, setSearch] = useState();
   const [city, setCity] = useState();
-  useEffect(() =>{
+  useEffect(() => {
     async function getApi() {
       try {
+        if (!search?.length || search.length < 3) {
+          setCity(undefined);
+          return;
+        }
         const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${search}&appid=${key}&units=metric`);
         console.log(response);
         setCity(response.data);
@@ -18,11 +22,11 @@ function App() {
       }
     }
     getApi();
-  },[search]);
+  }, [search]);
   return (
     <div className="App">
       <div>
-        <input 
+        <input
           onChange={(e) => setSearch(e.target.value)}
           type="text"
           className="border-8 bg-slate-500"
